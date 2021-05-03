@@ -1,0 +1,24 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "title": "This is a test task",
+      "details": "These are the details"
+    },
+    {
+      "id": 2,
+      "title": "This is not a test task",
+      "details": "These are not the details"
+    },
+    {
+      "id": 3,
+      "title": "This is a test task?",
+      "details": "These are the details?"
+    },
+    {
+      "title": "Store",
+      "details": "Store",
+      "id": 4
+    }
+  ]
+}
