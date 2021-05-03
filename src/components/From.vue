@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>Form</h1>
-        <form @submit.prevent="logIt()">
+        <form @submit="saveTask({title: title, details: details}).then(() =>reset())" :key=1>
         <BaseInput
             v-model="title"
             label="Title"
@@ -19,6 +19,7 @@
 
 <script>
 import BaseInput from './BaseInput'
+import TaskProvider from '../TaskProvider'
 import {ref} from 'vue'
 
     export default {
@@ -29,15 +30,23 @@ import {ref} from 'vue'
         setup() {
             const title = ref('')
             const details = ref('')
+            const { saveTask } = TaskProvider()
+            function reset() {
+                title.value = ''
+                details.value = ''
+            }
 
-            function logIt() {
-                console.log(title.value, details.value)
+            let task = {
+            title: title.value,
+            details: details.value
             }
 
             return {
                 title,
                 details,
-                logIt
+                reset,
+                saveTask,
+                task
             }
         }
     }
