@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>Form</h1>
-        <form @submit="saveTask({title: title, details: details}).then(() =>reset())" :key=1>
+        <form @submit="saveTask({title: title, details: details}).then(() =>reset())">
         <BaseInput
             v-model="title"
             label="Title"

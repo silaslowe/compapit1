@@ -3,32 +3,42 @@ import { ref, onMounted, watch } from 'vue'
 
 const tasks = ref(null)
 
+const apiClient = axios.create({
+    baseURL: 'http://localhost:3000',
+    withCredentials: false,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    }
+  })
+
 export default function() {
 
     function getTasks() {
-        fetch('http://localhost:3000/tasks').then((res) => res.json()).then((json) => (tasks.value = json))
+        apiClient.get('/tasks').then((res) => tasks.value = res.data)
     }
 
-    function saveTask(taskObj) {
-        console.log(taskObj)
-        return fetch('http://localhost:3000/tasks', {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(taskObj)
-        }).then(getTasks())
+    async function deleteTask(id) {
+        console.log(id)
+        await apiClient.delete(`/tasks/${id}`)
+        getTasks()
+
+    }
+
+    async function saveTask(taskObj) {
+        await apiClient.post('/tasks', taskObj)
+        getTasks()
     }
 
     onMounted(() => { getTasks() })
 
-//     watch(tasks, (newTasks, prevTasks) => {
-//         console.log(newTasks, prevTasks)
-// })
+    watch(tasks, (newTasks, prevTasks) => {
+})
 
     return {
         tasks,
-        saveTask
+        saveTask,
+        deleteTask
     }
 }
 
