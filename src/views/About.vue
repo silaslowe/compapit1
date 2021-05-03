@@ -1,5 +1,24 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div>
+    {{tasks}}
   </div>
 </template>
+
+<script>
+import TaskProvider from '../TaskProvider'
+
+  export default {
+    setup() {
+      const { tasks } = TaskProvider()
+
+      return {
+        tasks
+      }
+    }
+    
+  }
+</script>
+
+<style lang="scss" scoped>
+
+</style>

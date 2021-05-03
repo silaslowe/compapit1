@@ -1,34 +1,51 @@
 import axios from 'axios'
-import { ref, toRefs } from 'vue'
-import { computed } from '@vue/composition-api'
+import { ref, onMounted, watch } from 'vue'
 
-// const state = ref({
-//     tasks: []
+const tasks = ref(null)
+
+export default function() {
+
+    function getTasks() {
+        fetch('http://localhost:3000/tasks').then((res) => res.json()).then((json) => (tasks.value = json))
+    }
+
+    function saveTask(taskObj) {
+        console.log(taskObj)
+        return fetch('http://localhost:3000/tasks', {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(taskObj)
+        }).then(getTasks())
+    }
+
+    onMounted(() => { getTasks() })
+
+//     watch(tasks, (newTasks, prevTasks) => {
+//         console.log(newTasks, prevTasks)
 // })
 
-export function useTasks() {
-    const tasks = ref([])
-
-async function setTasks() {
-    tasks.value = await getTasks()
-}
-
-const apiClient = axios.create({
-    baseURL: 'http://localhost:3000',
-    withCredentials: false,
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json'
+    return {
+        tasks,
+        saveTask
     }
-  })
-
-function getTasks() {
-    return axios.get('http://localhost:3000/tasks')
 }
 
-return {
-    tasks,
-    setTasks,
-    getTasks
-}
-}
+
+
+
+
+// const apiClient = axios.create({
+//     baseURL: 'http://localhost:3000',
+//     withCredentials: false,
+//     headers: {
+//       Accept: 'application/json',
+//       'Content-Type': 'application/json'
+//     }
+//   })
+
+
+// async function setTasks() {
+//     tasks.value = await getTasks()
+// }
